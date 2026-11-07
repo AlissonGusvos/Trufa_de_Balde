@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Trufa de Balde</title>
+
+  <style>
+
+
+/* GRÁFICO DE VENDAS */
+
+.grafico-vendas {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    min-height: 280px;
+    padding: 20px 10px;
+    border-bottom: 2px solid #e5d7ce;
+    overflow-x: auto;
+}
+
+.coluna-venda {
+    flex: 1;
+    min-width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.valor-venda {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.barra-venda {
+    width: 70%;
+    max-width: 65px;
+    background: linear-gradient(#a05a2c, #4b2c24);
+    border-radius: 8px 8px 0 0;
+}
+
+.data-venda {
+    font-size: 12px;
+    color: #78665e;
+}
+
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f1ec;
+      color: #3d2923;
+    }
+
+    .dashboard {
+      max-width: 1200px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    h1, h2 { color: #4b2c24; }
+
+    .navegacao {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .botao {
+      padding: 11px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4b2c24;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .botao:hover { background: #754637; }
+
+    .indicadores {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .cartao {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+
+    .cartao .rotulo {
+      color: #78665e;
+      font-size: 14px;
+      margin: 0 0 12px;
+    }
+
+    .cartao .valor {
+      color: #4b2c24;
+      font-size: 30px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .secao {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+
+    .barra-status {
+      display: flex;
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #eee;
+      margin: 20px 0;
+    }
+
+    .segmento {
+      height: 100%;
+    }
+
+    .legenda {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .legenda-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .bolinha {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .tabela {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tabela th, .tabela td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .tabela th {
+      background: #4b2c24;
+      color: white;
+    }
+
+    .observacao {
+      color: #78665e;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    #mensagem {
+      color: #b3261e;
+    }
+
+    @media (max-width: 850px) {
+      .indicadores {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 550px) {
+      .indicadores {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard {
+        padding: 12px;
+      }
+    }
+  </style>
+
+  <script src="/admin/dashboard.js" defer></script>
+</head>
+<body>
+
+  <main class="dashboard">
+
+    <header class="topo">
+      <div>
+        <h1>🍫 Dashboard Administrativo</h1>
+        <p>Visão geral da Trufa de Balde</p>
+      </div>
+
+      <nav class="navegacao">
+        <a class="botao" href="/admin/pedidos.html">Pedidos</a>
+        <a class="botao" href="/admin/produtos.html">Produtos</a>
+        <button class="botao" id="btn-sair" type="button">Sair</button>
+      </nav>
+    </header>
+
+    <p id="mensagem" role="status"></p>
+
+    <section class="indicadores">
+      <article class="cartao">
+        <p class="rotulo">💰 Faturamento confirmado</p>
+        <p class="valor" id="faturamento">R$ 0,00</p>
+      </article>
+
+      <article class="cartao">
+        <p class="rotulo">🛍️ Total de pedidos</p>
+        <p class="valor" id="total-pedidos">0</p>
+      </article>
+
+      <article class="cartao">
+        <p class="rotulo">🕒 Pedidos novos</p>
+        <p class="valor" id="pedidos-novos">0</p>
+      </article>
+
+      <article class="cartao">
+        <p class="rotulo">👨‍🍳 Em preparação</p>
+        <p class="valor" id="pedidos-preparando">0</p>
+      </article>
+
+      <article class="cartao">
+        <p class="rotulo">✅ Pedidos entregues</p>
+        <p class="valor" id="pedidos-entregues">0</p>
+      </article>
+
+      <article class="cartao">
+        <p class="rotulo">🍫 Produtos disponíveis</p>
+        <p class="valor" id="produtos-disponiveis">0</p>
+      </article>
+    </section>
+
+    <section class="secao">
+      <h2>Distribuição dos pedidos</h2>
+      <p class="observacao">
+        A barra representa a quantidade de pedidos em cada status.
+      </p>
+
+      <div
+        class="barra-status"
+        id="barra-status"
+        role="img"
+        aria-label="Distribuição dos pedidos"
+      ></div>
+
+      <div class="legenda" id="legenda-status"></div>
+    </section>
+
+    <section class="secao">
+      <h2>🏆 Produtos mais vendidos</h2>
+      <p class="observacao">
+        Considera somente pedidos com pagamento confirmado.
+
+        <section class="secao">
+    <h2>📈 Vendas dos últimos 7 dias</h2>
+
+    <p class="observacao">
+        Faturamento diário com pagamentos confirmados.
+    </p>
+
+    <div id="grafico-vendas" class="grafico-vendas">
+        Carregando gráfico...
+    </div>
+</section>
+
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Quantidade vendida</th>
+            </tr>
+          </thead>
+          <tbody id="mais-vendidos">
+            <tr>
+              <td colspan="2">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="observacao">
+      Os dados são consultados diretamente no PostgreSQL.
+      Pedidos com PIX pendente não são contabilizados como faturamento.
+    </p>
+
+  </main>
+</body>
+</html>

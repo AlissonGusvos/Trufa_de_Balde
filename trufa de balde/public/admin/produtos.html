@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Produtos | Trufa de Balde</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f1ec;
+      color: #3d2923;
+    }
+
+    .painel {
+      max-width: 1200px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    h1, h2 {
+      color: #4b2c24;
+    }
+
+    .cartao {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+
+    .formulario {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo-completo {
+      grid-column: 1 / -1;
+    }
+
+    input, textarea, select {
+      padding: 11px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font: inherit;
+      width: 100%;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button, .link-botao {
+      padding: 11px 15px;
+      border: 0;
+      border-radius: 7px;
+      background: #4b2c24;
+      color: white;
+      cursor: pointer;
+      font: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    button:hover, .link-botao:hover {
+      background: #754637;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .botao-secundario {
+      background: #a05a2c;
+    }
+
+    .tabela-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #4b2c24;
+      color: white;
+    }
+
+    .acoes-tabela {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .disponivel {
+      color: #217a40;
+      font-weight: bold;
+    }
+
+    .indisponivel {
+      color: #b3261e;
+      font-weight: bold;
+    }
+
+    .mensagem {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 650px) {
+      .formulario {
+        grid-template-columns: 1fr;
+      }
+
+      .painel {
+        padding: 12px;
+      }
+
+      .cartao {
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <script src="/admin/produtos.js" defer></script>
+</head>
+
+<body>
+  <main class="painel">
+
+    <div class="topo">
+      <div>
+        <h1>🍫 Gerenciamento de Produtos</h1>
+        <p>Cadastre, edite e controle seu cardápio.</p>
+      </div>
+
+      <a href="/admin/pedidos.html" class="link-botao">
+        Ver pedidos
+      </a>
+    </div>
+
+    <section class="cartao">
+      <h2 id="titulo-formulario">Cadastrar produto</h2>
+
+      <form id="form-produto">
+        <div class="formulario">
+
+          <div class="campo">
+            <label for="nome">Nome do produto</label>
+            <input id="nome" maxlength="150" required>
+          </div>
+
+          <div class="campo">
+            <label for="preco">Preço (R$)</label>
+            <input
+              id="preco"
+              type="number"
+              min="0"
+              step="0.01"
+              required
+            >
+          </div>
+
+          <div class="campo">
+            <label for="categoria">Categoria</label>
+            <input id="categoria" maxlength="100">
+          </div>
+
+          <div class="campo">
+
+<div class="campo">
+  <label for="imagem_arquivo">Foto do produto</label>
+
+  <input
+    type="file"
+    id="imagem_arquivo"
+    accept="image/jpeg,image/png,image/webp"
+  >
+
+  <small>Formatos: JPG, PNG ou WebP. Máximo: 5 MB.</small>
+
+  <img
+    id="preview-imagem"
+    alt="Pré-visualização do produto"
+    hidden
+    style="
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+    "
+  >
+
+  <input type="hidden" id="imagem_url">
+</div>
+
+          </div>
+
+          <div class="campo campo-completo">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao"></textarea>
+          </div>
+
+          <div class="campo">
+            <label for="disponivel">Disponibilidade</label>
+            <select id="disponivel">
+              <option value="true">Disponível</option>
+              <option value="false">Indisponível</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="acoes">
+          <button type="submit" id="btn-salvar">
+            Cadastrar produto
+          </button>
+
+          <button
+            type="button"
+            id="btn-cancelar"
+            class="botao-secundario"
+            hidden
+          >
+            Cancelar edição
+          </button>
+        </div>
+      </form>
+
+      <p id="mensagem" class="mensagem" role="status"></p>
+    </section>
+
+    <section class="cartao">
+      <h2>Produtos cadastrados</h2>
+
+      <div class="tabela-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Disponibilidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="lista-produtos">
+            <tr>
+              <td colspan="6">Carregando produtos...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

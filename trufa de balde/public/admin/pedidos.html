@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pedidos | Trufa de Balde</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    /* PAINEL DE PEDIDOS */
+
+    .painel {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .cabecalho-painel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    /* NAVEGAÇÃO ADMINISTRATIVA */
+
+    .navegacao-painel {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .navegacao-painel .botao-painel {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-family: inherit;
+      font-size: 14px;
+      min-height: 40px;
+      white-space: nowrap;
+    }
+
+    /* TABELA DE PEDIDOS */
+
+    .tabela-pedidos {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      background: white;
+    }
+
+    .tabela-pedidos th,
+    .tabela-pedidos td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .tabela-pedidos th {
+      background: #4b2c24;
+      color: white;
+    }
+
+    .tabela-pedidos select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    /* BOTÕES */
+
+    .acoes-pedido {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .botao-painel {
+      padding: 9px 13px;
+      border: none;
+      border-radius: 7px;
+      background: #4b2c24;
+      color: white;
+      cursor: pointer;
+    }
+
+    .botao-painel:hover {
+      background: #704235;
+    }
+
+    .botao-detalhes {
+      background: #a05a2c;
+    }
+
+    .botao-detalhes:hover {
+      background: #bf7541;
+    }
+
+    .botao-painel:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* JANELA DE DETALHES DO PEDIDO */
+
+    dialog#modal-pedido {
+      position: fixed;
+      inset: 0;
+      margin: auto;
+
+      width: min(650px, calc(100% - 30px));
+      max-width: 650px;
+      max-height: 85vh;
+
+      padding: 25px;
+      border: none;
+      border-radius: 15px;
+
+      background-color: #ffffff;
+      color: #333333;
+
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+      overflow-y: auto;
+    }
+
+    dialog#modal-pedido:not([open]) {
+      display: none;
+    }
+
+    dialog#modal-pedido::backdrop {
+      background: rgba(0, 0, 0, 0.65);
+    }
+
+    /* CABEÇALHO DO MODAL */
+
+    .modal-cabecalho {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .modal-cabecalho h2 {
+      margin: 0;
+      color: #4b2c24;
+    }
+
+    .botao-fechar {
+      border: none;
+      background: #eee;
+      color: #333;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 22px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .botao-fechar:hover {
+      background: #ddd;
+    }
+
+    /* INFORMAÇÕES DO PEDIDO */
+
+    .detalhe-grupo {
+      margin-bottom: 20px;
+    }
+
+    .detalhe-grupo h3 {
+      margin-bottom: 10px;
+      color: #4b2c24;
+    }
+
+    .detalhe-grupo p {
+      margin: 7px 0;
+      overflow-wrap: anywhere;
+    }
+
+    /* PRODUTOS DO PEDIDO */
+
+    .tabela-itens {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .tabela-itens th,
+    .tabela-itens td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .tabela-itens th {
+      background: #f5e9e3;
+      color: #4b2c24;
+    }
+
+    .total-detalhes {
+      margin-top: 18px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: right;
+      color: #4b2c24;
+    }
+
+    /* RESPONSIVIDADE */
+
+    @media (max-width: 600px) {
+      .painel {
+        margin: 20px auto;
+        padding: 12px;
+      }
+
+      dialog#modal-pedido {
+        padding: 15px;
+      }
+
+      .tabela-itens th,
+      .tabela-itens td {
+        padding: 7px;
+        font-size: 13px;
+      }
+
+      .navegacao-painel {
+        width: 100%;
+      }
+
+      .navegacao-painel .botao-painel {
+        flex: 1;
+      }
+    }
+  </style>
+
+  <script src="/admin/pedidos.js" defer></script>
+</head>
+
+<body>
+
+  <main class="painel">
+
+    <!-- CABEÇALHO DO PAINEL -->
+
+    <div class="cabecalho-painel">
+
+      <div>
+        <h1>🍫 Painel de Pedidos</h1>
+        <p>Acompanhe os pedidos da Trufa de Balde.</p>
+      </div>
+
+      <!-- NAVEGAÇÃO -->
+
+      <nav class="navegacao-painel">
+
+        <a
+          href="/admin/dashboard.html"
+          class="botao-painel"
+        >
+          📊 Dashboard
+        </a>
+
+        <a
+          href="/admin/produtos.html"
+          class="botao-painel"
+        >
+          🍫 Produtos
+        </a>
+
+        <button
+          type="button"
+          id="btn-sair"
+          class="botao-painel"
+        >
+          Sair do painel
+        </button>
+
+      </nav>
+
+    </div>
+
+    <!-- LISTAGEM DOS PEDIDOS -->
+
+    <div style="overflow-x: auto;">
+
+      <table class="tabela-pedidos">
+
+        <thead>
+          <tr>
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Telefone</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody id="lista-pedidos">
+          <tr>
+            <td colspan="7">
+              Carregando pedidos...
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+  <!-- JANELA DE DETALHES DO PEDIDO -->
+
+  <dialog id="modal-pedido" class="modal-pedido">
+
+    <div class="modal-cabecalho">
+
+      <h2 id="titulo-detalhes">
+        Detalhes do pedido
+      </h2>
+
+      <button
+        type="button"
+        id="fechar-modal"
+        class="botao-fechar"
+        aria-label="Fechar detalhes"
+      >
+        &times;
+      </button>
+
+    </div>
+
+    <div id="conteudo-detalhes">
+      <p>Carregando informações...</p>
+    </div>
+
+  </dialog>
+
+</body>
+</html>

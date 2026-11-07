@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Administrativo | Trufa de Balde</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 35px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #00000015;
+    }
+
+    .login-container h1 {
+      margin-bottom: 20px;
+    }
+
+    .login-container input {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    #mensagem-login {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="login-container">
+    <h1>🍫 Área Administrativa</h1>
+    <p>Entre para gerenciar os pedidos.</p>
+
+    <form id="form-login">
+      <label for="senha">Senha do administrador</label>
+      <input
+        type="password"
+        id="senha"
+        required
+        autocomplete="current-password"
+      >
+
+      <button class="botao" type="submit">
+        Entrar no painel
+      </button>
+    </form>
+
+    <p id="mensagem-login" role="status"></p>
+  </main>
+
+  <script src="/js/admin-login.js" defer></script>
+</body>
+</html>

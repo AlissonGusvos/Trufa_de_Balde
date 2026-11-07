@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Finalizar pedido | Trufa de Balde</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/checkout.js" defer></script>
+
+  <style>
+    .checkout-container {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .checkout-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checkout-container input,
+    .checkout-container select,
+    .checkout-container textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .checkout-container h2 {
+      margin-top: 25px;
+      color: #4b2c24;
+    }
+
+    .opcoes-pagamento {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .opcao-pagamento {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .opcao-pagamento input {
+      width: auto;
+      accent-color: #4b2c24;
+    }
+
+    .opcao-pagamento:has(input:checked) {
+      border-color: #4b2c24;
+      background: #f9f0eb;
+    }
+
+    .campo-extra {
+      margin-top: 12px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f9f0eb;
+    }
+
+    .campo-extra[hidden],
+    #campo-endereco[hidden] {
+      display: none !important;
+    }
+
+    .campo-extra p {
+      margin: 0 0 12px;
+    }
+
+    .aviso-pagamento {
+      font-size: 14px;
+      color: #66554d;
+    }
+
+    #resumo-pedido {
+      padding: 18px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #eee;
+    }
+
+    #mensagem {
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .checkout-container button[type="submit"] {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="/" class="logo">
+      Trufa de Balde<span>.</span>
+    </a>
+  </header>
+
+  <main class="secao checkout-container">
+
+    <p class="etiqueta">QUASE LÁ!</p>
+    <h1>Finalizar pedido 🍫</h1>
+
+    <form id="form-checkout">
+
+      <h2>👤 Seus dados</h2>
+
+      <label for="email">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+      >
+
+      <label for="nome">Nome completo</label>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        maxlength="120"
+        required
+      >
+
+      <label for="telefone">Telefone / WhatsApp</label>
+      <input
+        type="tel"
+        id="telefone"
+        name="telefone"
+        maxlength="20"
+        required
+      >
+
+      <h2>📦 Recebimento</h2>
+
+      <label for="tipo-entrega">Como deseja receber?</label>
+
+      <select
+        id="tipo-entrega"
+        name="tipoEntrega"
+        required
+      >
+        <option value="retirada">Retirar na loja</option>
+        <option value="entrega">Receber por entrega</option>
+      </select>
+
+      <div id="campo-endereco" hidden>
+
+        <label for="endereco">Endereço de entrega</label>
+
+        <textarea
+          id="endereco"
+          name="endereco"
+          maxlength="500"
+        ></textarea>
+
+      </div>
+
+      <h2>💳 Forma de pagamento</h2>
+
+      <p>Escolha como deseja pagar seu pedido:</p>
+
+      <div class="opcoes-pagamento">
+
+        <label class="opcao-pagamento">
+          <input
+            type="radio"
+            name="tipoPagamento"
+            value="online"
+            checked
+          >
+          💳 Pagar online
+        </label>
+
+        <label class="opcao-pagamento">
+          <input
+            type="radio"
+            name="tipoPagamento"
+            value="presencial"
+          >
+          🏪 Pagar presencialmente
+        </label>
+
+      </div>
+
+      <!-- PAGAMENTO ONLINE -->
+
+      <div id="pagamento-online" class="campo-extra">
+
+        <p><strong>Escolha a forma de pagamento:</strong></p>
+
+        <div class="opcoes-pagamento">
+
+          <label class="opcao-pagamento">
+            <input
+              type="radio"
+              name="metodoOnline"
+              value="pix"
+              checked
+            >
+            📱 PIX
+          </label>
+
+          <label class="opcao-pagamento">
+            <input
+              type="radio"
+              name="metodoOnline"
+              value="credito"
+            >
+            💳 Cartão de crédito
+          </label>
+
+          <label class="opcao-pagamento">
+            <input
+              type="radio"
+              name="metodoOnline"
+              value="debito"
+            >
+            💳 Cartão de débito
+          </label>
+
+        </div>
+
+        <p class="aviso-pagamento">
+          A cobrança online será disponibilizada após a
+          integração com o provedor de pagamentos.
+        </p>
+
+      </div>
+
+      <!-- PAGAMENTO PRESENCIAL -->
+
+      <div
+        id="pagamento-presencial"
+        class="campo-extra"
+        hidden
+      >
+
+        <p><strong>Onde deseja realizar o pagamento?</strong></p>
+
+        <div class="opcoes-pagamento">
+
+          <label
+            id="opcao-visita"
+            class="opcao-pagamento"
+          >
+            <input
+              type="radio"
+              name="localPagamento"
+              value="visita"
+            >
+            🚚 Durante a visita / entrega
+          </label>
+
+          <label class="opcao-pagamento">
+            <input
+              type="radio"
+              name="localPagamento"
+              value="loja"
+            >
+            🏪 Na loja
+          </label>
+
+        </div>
+
+      </div>
+
+      <h2>🍫 Resumo do pedido</h2>
+
+      <div id="resumo-pedido"></div>
+
+      <p id="mensagem" role="status"></p>
+
+      <button class="botao" type="submit">
+        Confirmar pedido
+      </button>
+
+    </form>
+
+  </main>
+
+</body>
+</html>

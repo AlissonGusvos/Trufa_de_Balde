@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Trufa de Balde | Doces e Sobremesas</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/app.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <img class="logo_tb"  src="https://scontent.cdninstagram.com/v/t51.82787-19/705749215_18589444774020996_5219906574999202406_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=109&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=SM-_QJIoJeoQ7kNvwG8OyGt&_nc_oc=AdoXhsYA5qU7PVXZ42eLzMw7fGk6rhjXeUxsfuFFzOjPd4Fu3RcfOjUmg16T1DOdVAs&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=FCCLjEhru-w6uNvaSbFPWQ&_nc_ss=7b689&oh=00_AQN_7E-jvvmzuNNpXVnxNarQufViXLOOG4Tw6CijCubEng&oe=6ADF0C44" alt="logo_tb">
+    <a href="/" class="logo">Trufa de Balde<span>.</span></a>
+
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#cardapio">Cardápio</a>
+      <a href="#fidelidade">Fidelidade</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <p class="etiqueta">FEITO PARA ADOÇAR SEU DIA</p>
+
+      <h1>Seu momento doce começa aqui.</h1>
+
+      <p>
+        Bolos, chocolates e sobremesas irresistíveis
+        para deixar qualquer momento mais especial.
+      </p>
+
+      <a class="botao" href="#cardapio">Explorar cardápio</a>
+    </section>
+
+    <section class="secao" id="cardapio">
+      <p class="etiqueta">NOSSAS DELÍCIAS</p>
+      <h2>Um doce para cada vontade.</h2>
+
+      <!-- BUSCA -->
+      <div class="area-busca">
+        <label for="buscar-produto">Encontre sua delícia favorita</label>
+
+        <input
+          type="search"
+          id="buscar-produto"
+          placeholder="Buscar trufas, Nutella, bolos..."
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- CATEGORIAS -->
+      <div
+        id="filtros-categorias"
+        class="filtros-categorias"
+        aria-label="Filtrar produtos por categoria"
+      >
+        <button
+          type="button"
+          class="filtro ativo"
+          data-categoria="Todos"
+        >
+          Todos
+        </button>
+      </div>
+
+      <!-- PRODUTOS -->
+      <div id="produtos">
+        <p>Carregando cardápio...</p>
+      </div>
+    </section>
+
+    <section class="carrinho" id="carrinho">
+      <h2>Seu carrinho 🛒</h2>
+
+      <div id="itens-carrinho">
+        <p>Seu carrinho está vazio.</p>
+      </div>
+
+      <div class="total-carrinho">
+        <strong>Total:</strong>
+        <strong id="total-carrinho">R$ 0,00</strong>
+      </div>
+
+      <button id="finalizar-pedido" class="botao" disabled>
+        Continuar para finalizar
+      </button>
+    </section>
+
+    <section class="secao fidelidade" id="fidelidade">
+      <p class="etiqueta">CLUBE TRUFA DE BALDE</p>
+      <h2>Comprou, acumulou, ganhou!</h2>
+
+      <p>
+        Acumule pontos conforme o valor das suas compras
+        e troque por recompensas especiais.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Trufa de Balde · Ferraz de Vasconcelos, SP</p>
+  </footer>
+</body>
+</html>
